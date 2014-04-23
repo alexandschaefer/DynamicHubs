@@ -279,7 +279,7 @@
 "0199340",
 "0199620"
     ], 
-    "surf_dir": "/scr/osmium2/Balance_RAP_3T/03088.88_20130218_072939_1.TRIO/freesurfer", 
+    "surf_dir": "/scr/kalifornien1/data/nki_enhanced/freesurfer", 
     "surface_fwhm": 0.0, 
     "test_mode": false, 
     "timeout": 14.0, 
