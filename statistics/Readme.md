@@ -1,0 +1,1 @@
+This code was used to anaylze the data. The code is very specific for the used dataset and parcellation and csv files. The code was not intendet for general use. I provide the code here more as a backup than for general use. 
