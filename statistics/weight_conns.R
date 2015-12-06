@@ -94,6 +94,8 @@ for (j in (1:length(list_of_time_mats))){
     average_z=0.5*(log(1+r) - log(1-r));
     idx=which(is.infinite(average_z)==TRUE);
     average_z[idx]=0;
+	dim(average_z)
+	dim(bla_average)
 	bla_average[j,,]=average_z;
 }
 return(bla_average)
@@ -104,14 +106,16 @@ bla=array(0,dim=c(length(list_of_time_mats),dim(mat)[1],dim(mat)[1],length(seq(w
 bla_average=array(0,dim=c(length(list_of_time_mats),dim(mat)[1],dim(mat)[1]))
 for (j in (1:length(list_of_time_mats))){
     count=0;
-    r=cor(t(list_of_time_mats[[j]]))
+    r=cor(t(list_of_time_mats[[j]]),use='complete')
     average_z=0.5*(log(1+r) - log(1-r));
     idx=which(is.infinite(average_z)==TRUE);
     average_z[idx]=0;
+	print(dim(average_z))
+	print(dim(bla_average))
 	bla_average[j,,]=average_z;
     for (i in (seq(window_width,dim(list_of_time_mats[[1]])[2],window_width))) {### iteration over time
         count=count+1
-        r=cor(t(list_of_time_mats[[j]][,(i-window_width+1):i]));
+        r=cor(t(list_of_time_mats[[j]][,(i-window_width+1):i]),use='complete');
         tmp_z=0.5*(log(1+r) - log(1-r));
         idx=which(is.infinite(tmp_z)==TRUE);
         tmp_z[idx]=0;
@@ -191,12 +195,12 @@ get_multi_switching<-function(clust,bla) { ##clust is an r linkcomm struct, bla 
 					        for (j in (1:length(list_of_conn_idx1))){  ##run trough associated edges (for the two largest clusters)
 						    change1[j,]=bla[s,list_of_ass_connections[list_of_conn_idx1[j],1],list_of_ass_connections[list_of_conn_idx1[j],2],]
 					        }
-					        avg_change1=colMeans(change1)
+					        avg_change1=colMeans(change1,na.rm=TRUE)
 					        change2=array(0,dim=c(length(list_of_conn_idx2),dim(bla)[4]));
 					        for (j in (1:length(list_of_conn_idx2))){  ##run trough associated edges (for the two largest clusters)
 						    change2[j,]=bla[s,list_of_ass_connections[list_of_conn_idx2[j],1],list_of_ass_connections[list_of_conn_idx2[j],2],]
 					        }
-					        avg_change2=colMeans(change2);
+					        avg_change2=colMeans(change2,na.rm=TRUE);
 						    count=count+1;
 					        region_switch[s,firstcluster*(clust$numbers[3]-1)+secondcluster]=region_switch[s,firstcluster*(clust$numbers[3]-1)+secondcluster]+sum(abs(avg_change2-avg_change1));
                         regional_switch[s,i]=regional_switch[s,i]+sum(abs(avg_change2-avg_change1))*sqrt(length(list_of_conn_idx2)*length(list_of_conn_idx1))# account for number of connections, not over rate by sqrt
